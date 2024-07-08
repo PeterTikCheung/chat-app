@@ -8,6 +8,8 @@ import userRouter from '@src/routes/userRouter';
 import chatRoomRouter from '@src/routes/chatRoomRouter';
 import deleteRouter from '@src/routes/deleteRouter';
 import Logging from '@src/utils/logging';
+import { Server } from 'socket.io';
+import WebSockets from '@src/utils/WebSocket';
 
 const app = express();
 
@@ -17,6 +19,7 @@ app.set('port', port);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/users', userRouter);
@@ -31,6 +34,11 @@ app.use('*', (req: Request, res: Response) => {
 });
 
 const server = http.createServer(app);
+
+const io = new Server(server);
+
+// Handle WebSocket connections
+io.on('connection', WebSockets.connection);
 
 server.listen(port);
 

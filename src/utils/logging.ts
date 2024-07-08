@@ -1,7 +1,7 @@
 // src/library/logging.ts
 import chalk from 'chalk';
 export default class Logging {
-  public static info = (args: any): void => {
+  public static info = (args: string): void => {
     // eslint-disable-next-line no-console
     console.log(
       chalk.blue(`
@@ -11,7 +11,7 @@ export default class Logging {
     );
   };
 
-  public static warn = (args: any): void => {
+  public static warn = (args: string): void => {
     // eslint-disable-next-line no-console
     console.log(
       chalk.yellow(`
@@ -21,7 +21,7 @@ export default class Logging {
     );
   };
 
-  public static error = (args: any): void => {
+  public static error = (args: string): void => {
     // eslint-disable-next-line no-console
     console.log(
       chalk.red(`
@@ -31,7 +31,7 @@ export default class Logging {
     );
   };
 
-  public static log = (args: any): void => {
+  public static log = (args: string): void => {
     // eslint-disable-next-line no-console
     console.log(
       chalk.green(`

@@ -1,6 +1,6 @@
 import express from 'express';
 // controllers
-import deleteController from '@src/controllers/deleteController';
+import deleteController from '@src/controllers/DeleteController';
 
 const router = express.Router();
 

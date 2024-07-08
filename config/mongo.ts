@@ -1,4 +1,4 @@
-import mongoose, { ConnectOptions } from 'mongoose';
+import mongoose from 'mongoose';
 import config from '@config/index'; // Assuming you have an index file with your configuration
 import Logging from '@src/utils/logging';
 

@@ -1,18 +1,19 @@
 import mongoose, { Document, Model } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-export const CHAT_ROOM_TYPES = {
+export const CHATROOM_TYPES = {
   CONSUMER_TO_CONSUMER: 'consumer-to-consumer',
   CONSUMER_TO_SUPPORT: 'consumer-to-support',
 };
 
-interface IChatRoom extends Document {
+interface IChatroom extends Document {
+  _id: string;
   userIds: string[];
   type: string;
   chatInitiator: string;
 }
 
-const chatRoomSchema = new mongoose.Schema<IChatRoom>(
+const chatroomSchema = new mongoose.Schema<IChatroom>(
   {
     _id: {
       type: String,
@@ -28,4 +29,4 @@ const chatRoomSchema = new mongoose.Schema<IChatRoom>(
   },
 );
 
-export default mongoose.model<IChatRoom>('ChatRoom', chatRoomSchema);
+export default mongoose.model<IChatroom>('Chatroom', chatroomSchema);

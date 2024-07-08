@@ -10,7 +10,7 @@ const UserController = {
       const users = await UserService.getAllUsers();
       return res.status(200).json({ success: true, users });
     } catch (error) {
-      return res.status(500).json({ success: false, error: error })
+      return res.status(500).json({ success: false, error: error });
     }
   },
   onGetUserById: async (req: Request, res: Response) => {
@@ -18,7 +18,7 @@ const UserController = {
       const user = await UserService.getUserById(req.params.id);
       return res.status(200).json({ success: true, user });
     } catch (error) {
-      return res.status(500).json({ success: false, error: error })
+      return res.status(500).json({ success: false, error: error });
     }
   },
   onCreateUser: async (req: Request, res: Response) => {
@@ -30,6 +30,6 @@ const UserController = {
       return res.status(500).json({ success: false, error });
     }
   },
-}
+};
 
 export default UserController;

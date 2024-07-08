@@ -1,6 +1,6 @@
 import express from 'express';
 // controllers
-import chatroomController from '@src/controllers/chatroomController';
+import chatroomController from '@src/controllers/ChatroomController';
 
 const router = express.Router();
 

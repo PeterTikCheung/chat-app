@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 // models
 import User, { USER_TYPES } from '@src/models/User';
-import UserService from '@src/services/userService';
+import UserService from '@src/services/UserService';
 import Logging from '@src/utils/logging';
 
 const UserController = {

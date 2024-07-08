@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
-import userController from '@src/controllers/userController'; // Assuming you have a user controller
+import userController from '@src/controllers/UserController'; // Assuming you have a user controller
 
 const router = express.Router();
 

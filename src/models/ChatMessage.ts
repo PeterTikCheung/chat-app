@@ -11,9 +11,9 @@ interface ReadByRecipient {
   readAt: Date;
 }
 
-interface ChatMessage extends Document {
+export interface IChatMessage extends Document {
   _id: string;
-  chatRoomId: string;
+  chatroomId: string;
   message: Record<string, any>; // You can specify a more specific type for the message if needed
   type: string;
   postedByUser: string;
@@ -55,4 +55,4 @@ const chatMessageSchema: Schema = new mongoose.Schema(
   },
 );
 
-export default mongoose.model<ChatMessage>('ChatMessage', chatMessageSchema);
+export default mongoose.model<IChatMessage>('ChatMessage', chatMessageSchema);

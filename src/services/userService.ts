@@ -11,7 +11,8 @@ const UserService = {
       user.save();
       return user;
     } catch (error: any) {
-      Logging.error(error.message);
+      Logging.error('Error on createUser service method:' + error);
+      throw error;
     }
   },
   getUserById: async (id: string) => {
@@ -19,7 +20,8 @@ const UserService = {
       const user = await User.findOne({ _id: id });
       return user;
     } catch (error: any) {
-      Logging.error(error.message);
+      Logging.error('Error on getUserById service method:' + error);
+      throw error;
     }
   },
   getAllUsers: async () => {
@@ -27,7 +29,17 @@ const UserService = {
       const user = await User.find();
       return user;
     } catch (error: any) {
-      Logging.error(error.message);
+      Logging.error('Error on getAllUser service method:' + error);
+      throw error;
+    }
+  },
+  getUserByIds: async (ids: string[]) => {
+    try {
+      const users = await User.find({ _id: { $in: ids } });
+      return users;
+    } catch (error) {
+      Logging.error('Error on getUserByIds service method:' + error);
+      throw error;
     }
   },
 };

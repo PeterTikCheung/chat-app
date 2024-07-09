@@ -10,6 +10,7 @@ const UserController = {
       const users = await UserService.getAllUsers();
       return res.status(200).json({ success: true, users });
     } catch (error) {
+      Logging.error('Error on onGetAllUsers controller method:' + error);
       return res.status(500).json({ success: false, error: error });
     }
   },
@@ -18,6 +19,7 @@ const UserController = {
       const user = await UserService.getUserById(req.params.id);
       return res.status(200).json({ success: true, user });
     } catch (error) {
+      Logging.error('Error on onGetUserById controller method:' + error);
       return res.status(500).json({ success: false, error: error });
     }
   },
@@ -27,6 +29,7 @@ const UserController = {
       const user = await UserService.createUser(firstName, lastName, type);
       return res.status(200).json({ success: true, user });
     } catch (error) {
+      Logging.error('Error on onCreateUser controller method:' + error);
       return res.status(500).json({ success: false, error });
     }
   },

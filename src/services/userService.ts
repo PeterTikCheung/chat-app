@@ -5,7 +5,7 @@ const UserService = {
     firstName: string,
     lastName: string,
     type: keyof typeof USER_TYPES,
-  ) => {
+  ): Promise<any> => {
     try {
       const user = new User({ firstName, lastName, type });
       user.save();
@@ -15,7 +15,7 @@ const UserService = {
       throw error;
     }
   },
-  getUserById: async (id: string) => {
+  getUserById: async (id: string): Promise<any> => {
     try {
       const user = await User.findOne({ _id: id });
       return user;
@@ -24,7 +24,7 @@ const UserService = {
       throw error;
     }
   },
-  getAllUsers: async () => {
+  getAllUsers: async (): Promise<any> => {
     try {
       const user = await User.find();
       return user;
@@ -33,7 +33,7 @@ const UserService = {
       throw error;
     }
   },
-  getUserByIds: async (ids: string[]) => {
+  getUserByIds: async (ids: string[]): Promise<any> => {
     try {
       const users = await User.find({ _id: { $in: ids } });
       return users;

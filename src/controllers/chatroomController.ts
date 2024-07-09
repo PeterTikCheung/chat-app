@@ -9,32 +9,34 @@ import {
 } from '@src/definitions/RequestDefinition';
 import Logging from '@src/utils/logging';
 
-export default {
-  initiate: async (req: IIniChatroomRequest, res: Response) => {
+const ChatroomController = {
+  initiate: async (req: Request, res: Response): Promise<Response> => {
     try {
-      const { userIds, type } = req.body;
-      const chatInitiator: string = req.userId;
+      const request = req as IIniChatroomRequest;
+      const { userIds, type } = request.body;
+      const chatInitiator: string = request.userId;
       const allUserIds = [...userIds, chatInitiator];
       const chatroom = await ChatroomService.initiateChat(
         allUserIds,
         type,
         chatInitiator,
       );
-      res.status(200).json({ success: true, chatroom });
+      return res.status(200).json({ success: true, chatroom });
     } catch (error) {
       Logging.error('Error on initiate controller method:' + error);
-      res.status(500).json({ success: false, error });
+      return res.status(500).json({ success: false, error: error });
     }
   },
-  postMessage: async (req: IPostMessageRequest, res: Response) => {
+  postMessage: async (req: Request, res: Response): Promise<Response> => {
     try {
+      const request = req as IPostMessageRequest;
       const io = getSharedContext().io;
-      const { roomId } = req.params;
+      const { roomId } = request.params;
 
       const messagePayload: any = {
-        messageText: req.body.messageText,
+        messageText: request.body.messageText,
       };
-      const currentLoggedUser = req.userId; // Assuming you have middleware that sets req.userId
+      const currentLoggedUser = request.userId; // Assuming you have middleware that sets req.userId
       const post = await ChatroomService.createPostInChatroom(
         roomId,
         messagePayload,
@@ -52,7 +54,7 @@ export default {
   getRecentConversation: async (req: Request, res: Response) => {
     // Your implementation here
   },
-  getConversationByRoomId: async (req: Request, res: Response) => {
+  getConversationByRoomId: async (req: Request, res: Response): Promise<Response> => {
     try {
       const { roomId } = req.params;
       const room = await ChatroomService.getChatroomByRoomId(roomId);
@@ -84,11 +86,12 @@ export default {
     }
   },
   markConversationReadByRoomId: async (
-    req: IMarkReadRequest,
+    req: Request,
     res: Response,
-  ) => {
+  ): Promise<Response> => {
     try {
-      const { roomId } = req.params;
+      const request = req as IMarkReadRequest;
+      const { roomId } = request.params;
       const room = await ChatroomService.getChatroomByRoomId(roomId);
       if (!room) {
         return res.status(400).json({
@@ -97,7 +100,7 @@ export default {
         });
       }
 
-      const currentLoggedUser = req.userId; // Assuming you have middleware that sets req.userId
+      const currentLoggedUser = request.userId; // Assuming you have middleware that sets req.userId
       const result = await ChatroomService.markMessageRead(
         roomId,
         currentLoggedUser,
@@ -111,3 +114,5 @@ export default {
     }
   },
 };
+
+export default ChatroomController;

@@ -1,4 +1,4 @@
-import mongoose, { Document, Model } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 export const CHATROOM_TYPES = {
@@ -17,7 +17,7 @@ const chatroomSchema = new mongoose.Schema<IChatroom>(
   {
     _id: {
       type: String,
-      default: () => uuidv4().replace(/-/g, ''),
+      default: ():string => uuidv4().replace(/-/g, ''),
     },
     userIds: [String],
     type: String,

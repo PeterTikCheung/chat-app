@@ -1,7 +1,5 @@
 import Chatroom from '@src/models/Chatroom';
 import ChatMessage from '@src/models/ChatMessage';
-import { Aggregate, UpdateQuery } from 'mongoose';
-import { IChatMessage } from '@src/models/ChatMessage';
 import Logging from '@src/utils/logging';
 const ChatroomService = {
   initiateChat: async (
@@ -55,7 +53,7 @@ const ChatroomService = {
     chatroomId: string,
     message: string,
     postedByUser: string,
-  ) => {
+  ): Promise<any> => {
     try {
       const post = new ChatMessage({
         chatroomId,
@@ -125,7 +123,7 @@ const ChatroomService = {
       throw error;
     }
   },
-  getChatroomByRoomId: async (roomId: string) => {
+  getChatroomByRoomId: async (roomId: string): Promise<any> => {
     try {
       const room = await Chatroom.findOne({ _id: roomId });
       return room;
@@ -138,7 +136,7 @@ const ChatroomService = {
   getConversationByRoomId: async (
     chatroomId: string,
     options: { page?: number; limit?: number } = {},
-  ): Promise<Aggregate<IChatMessage[]>> => {
+  ): Promise<any> => {
     try {
       return ChatMessage.aggregate([
         // Filters chat messages based on the specified chatRoomId.
@@ -170,7 +168,7 @@ const ChatroomService = {
   markMessageRead: async (
     chatroomId: string,
     currentUserOnlineId: string,
-  ): Promise<UpdateQuery<IChatMessage>> => {
+  ): Promise<any> => {
     try {
       return ChatMessage.updateMany(
         {

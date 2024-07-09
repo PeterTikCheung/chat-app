@@ -1,0 +1,30 @@
+// DDL for creating the employees collection
+use chatdb;
+
+db.createCollection('users', {
+    validator: {
+        $jsonSchema: {
+            bsonType: 'object',
+            required: ['firstName', 'lastName', 'type'],
+            properties: {
+                firstName: { bsonType: 'string' },
+                lastName: { bsonType: 'string' },
+                type: { bsonType: 'string' }
+            }
+        }
+    }
+})
+
+db.createCollection('chatrooms', {
+    validator: {
+        $jsonSchema: {
+            bsonType: 'object',
+            required: ['userIds', 'type', 'chatInitiator'],
+            properties: {
+                userIds: { bsonType: 'array' },
+                type: { bsonType: 'string' },
+                chatInitiator: { bsonType: 'string' }
+            }
+        }
+    }
+})

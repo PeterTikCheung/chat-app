@@ -10,6 +10,7 @@ import deleteRouter from '@src/routes/deleteRouter';
 import Logging from '@src/utils/logging';
 import { Server } from 'socket.io';
 import WebSockets from '@src/utils/WebSocket';
+import { setSharedContext } from '@src/utils/ContextManager';
 
 const app = express();
 
@@ -36,10 +37,10 @@ app.use('*', (req: Request, res: Response) => {
 const server = http.createServer(app);
 
 const io = new Server(server);
-
+setSharedContext({ io });
 // Handle WebSocket connections
 io.on('connection', WebSockets.connection);
-
+setSharedContext({ io });
 server.listen(port);
 
 server.on('listening', () => {

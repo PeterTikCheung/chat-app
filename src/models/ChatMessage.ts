@@ -40,7 +40,7 @@ const chatMessageSchema: Schema = new mongoose.Schema(
       type: String,
       default: () => uuidv4().replace(/-/g, ''),
     },
-    chatRoomId: String,
+    chatroomId: String,
     message: mongoose.Schema.Types.Mixed,
     type: {
       type: String,

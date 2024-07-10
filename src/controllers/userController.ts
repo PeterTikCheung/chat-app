@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 // models
 import UserService from '@src/services/UserService';
-import Logging from '@src/utils/logging';
+import Logging from '@src/utils/Logging';
 
 const UserController = {
   onGetAllUsers: async (req: Request, res: Response): Promise<Response> => {

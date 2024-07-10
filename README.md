@@ -1,6 +1,6 @@
 # Typescript chat app backend
 
-This is a backend application for real time chatroom using Express.js, Typescript, Mongodb. It includes user api, chatroom socket, and chatroon integration api.
+This is a backend application for real time chatroom using Express.js, Typescript, Mongodb. It includes user api, auth api, chatroom socket, and chatroon integration api.
 
 
 
@@ -11,6 +11,11 @@ This is a backend application for real time chatroom using Express.js, Typescrip
 2. Node.js version 20
 ## Installation
 
+```bash
+JWT_SECRET_KEY = <Your JWT secret key>
+```
+
+3. Create a .env file in the root directory
 ```bash
 npm install
 ```

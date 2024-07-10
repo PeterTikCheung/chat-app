@@ -9,3 +9,6 @@ export interface IPostMessageRequest extends Request {
 export interface IMarkReadRequest extends Request {
   userId: string;
 }
+export interface IJwtAuthRequest extends Request {
+  userId: string;
+}

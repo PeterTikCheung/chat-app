@@ -1,6 +1,7 @@
 import Chatroom from '@src/models/Chatroom';
 import ChatMessage from '@src/models/ChatMessage';
-import Logging from '@src/utils/logging';
+import Logging from '@src/utils/Logging';
+import mongoose from 'mongoose';
 const ChatroomService = {
   initiateChat: async (
     userIds: string[],
@@ -13,22 +14,22 @@ const ChatroomService = {
     type: string;
   }> => {
     try {
-      const availableRoom = await Chatroom.findOne({
-        userIds: {
-          $size: userIds.length,
-          $all: [...userIds],
-        },
-        type,
-      });
+      // const availableRoom = await Chatroom.findOne({
+      //   userIds: {
+      //     $size: userIds.length,
+      //     $all: [...userIds],
+      //   },
+      //   type,
+      // });
 
-      if (availableRoom) {
-        return {
-          isNew: false,
-          message: 'Retrieving an old chat room',
-          chatroomId: availableRoom._id,
-          type: availableRoom.type,
-        };
-      }
+      // if (availableRoom) {
+      //   return {
+      //     isNew: false,
+      //     message: 'Retrieving an old chat room',
+      //     chatroomId: availableRoom._id,
+      //     type: availableRoom.type,
+      //   };
+      // }
       const newRoom = new Chatroom({
         userIds,
         type,
@@ -63,59 +64,90 @@ const ChatroomService = {
       });
       post.save();
 
-      const aggregate = await ChatMessage.aggregate([
-        // get post where _id = post._id
-        { $match: { _id: post._id } },
-        // do a join on another table called users, and
-        // get me a user whose _id = postedByUser
-        {
-          $lookup: {
-            from: 'users',
-            localField: 'postedByUser',
-            foreignField: '_id',
-            as: 'postedByUser',
-          },
-        },
-        { $unwind: '$postedByUser' },
-        // do a join on another table called chatrooms, and
-        // get me a chatroom whose _id = chatRoomId
-        {
-          $lookup: {
-            from: 'chatrooms',
-            localField: 'chatroomId',
-            foreignField: '_id',
-            as: 'chatroomInfo',
-          },
-        },
-        { $unwind: '$chatRoomInfo' },
-        { $unwind: '$chatRoomInfo.userIds' },
-        // do a join on another table called users, and
-        // get me a user whose _id = userIds
-        {
-          $lookup: {
-            from: 'users',
-            localField: 'chatroomInfo.userIds',
-            foreignField: '_id',
-            as: 'chatroomInfo.userProfile',
-          },
-        },
-        { $unwind: '$chatroomInfo.userProfile' },
-        // group data
-        {
-          $group: {
-            _id: '$chatRoomInfo._id',
-            postId: { $last: '$_id' },
-            chatRoomId: { $last: '$chatRoomInfo._id' },
-            message: { $last: '$message' },
-            type: { $last: '$type' },
-            postedByUser: { $last: '$postedByUser' },
-            readByRecipients: { $last: '$readByRecipients' },
-            chatRoomInfo: { $addToSet: '$chatRoomInfo.userProfile' },
-            createdAt: { $last: '$createdAt' },
-            updatedAt: { $last: '$updatedAt' },
-          },
-        },
-      ]);
+      const aggregate = await ChatMessage.aggregate([])
+        .match({ _id: post._id })
+        .lookup({
+          from: 'users',
+          localField: 'postedByUser',
+          foreignField: '_id',
+          as: 'postedByUser',
+        })
+        .lookup({
+          from: 'chatrooms',
+          localField: 'chatroomId',
+          foreignField: '_id',
+          as: 'chatroomInfo',
+        })
+        .lookup({
+          from: 'users',
+          localField: 'chatroomInfo.userIds',
+          foreignField: '_id',
+          as: 'chatroomInfo.userProfile',
+        })
+        .group({
+          _id: '$chatRoomInfo._id',
+          postId: { $last: '$_id' },
+          chatRoomId: { $last: '$chatRoomInfo._id' },
+          message: { $last: '$message' },
+          type: { $last: '$type' },
+          postedByUser: { $last: '$postedByUser' },
+          readByRecipients: { $last: '$readByRecipients' },
+          chatRoomInfo: { $addToSet: '$chatRoomInfo.userProfile' },
+          createdAt: { $last: '$createdAt' },
+          updatedAt: { $last: '$updatedAt' },
+        });
+      //   // get post where _id = post._id
+      //   { $match: { _id: post._id } },
+      //   // do a join on another table called users, and
+      //   // get me a user whose _id = postedByUser
+      //   {
+      //     $lookup: {
+      //       from: 'users',
+      //       localField: 'postedByUser',
+      //       foreignField: '_id',
+      //       as: 'postedByUser',
+      //     },
+      //   },
+      //   { $unwind: '$postedByUser' },
+      //   // do a join on another table called chatrooms, and
+      //   // get me a chatroom whose _id = chatRoomId
+      //   {
+      //     $lookup: {
+      //       from: 'chatrooms',
+      //       localField: 'chatroomId',
+      //       foreignField: '_id',
+      //       as: 'chatroomInfo',
+      //     },
+      //   },
+      //   { $unwind: '$chatRoomInfo' },
+      //   { $unwind: '$chatRoomInfo.userIds' },
+      //   // do a join on another table called users, and
+      //   // get me a user whose _id = userIds
+      //   {
+      //     $lookup: {
+      //       from: 'users',
+      //       localField: 'chatroomInfo.userIds',
+      //       foreignField: '_id',
+      //       as: 'chatroomInfo.userProfile',
+      //     },
+      //   },
+      //   { $unwind: '$chatroomInfo.userProfile' },
+      //   // group data
+      //   {
+      //     $group: {
+      //       _id: '$chatRoomInfo._id',
+      //       postId: { $last: '$_id' },
+      //       chatRoomId: { $last: '$chatRoomInfo._id' },
+      //       message: { $last: '$message' },
+      //       type: { $last: '$type' },
+      //       postedByUser: { $last: '$postedByUser' },
+      //       readByRecipients: { $last: '$readByRecipients' },
+      //       chatRoomInfo: { $addToSet: '$chatRoomInfo.userProfile' },
+      //       createdAt: { $last: '$createdAt' },
+      //       updatedAt: { $last: '$updatedAt' },
+      //     },
+      //   },
+      // ]);
 
       return aggregate[0]; // Adjust this based on your actual result
     } catch (error) {

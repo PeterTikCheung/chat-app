@@ -7,7 +7,7 @@ import {
   IPostMessageRequest,
   IMarkReadRequest,
 } from '@src/definitions/RequestDefinition';
-import Logging from '@src/utils/logging';
+import Logging from '@src/utils/Logging';
 
 const ChatroomController = {
   initiate: async (req: Request, res: Response): Promise<Response> => {
@@ -15,7 +15,8 @@ const ChatroomController = {
       const request = req as IIniChatroomRequest;
       const { userIds, type } = request.body;
       const chatInitiator: string = request.userId;
-      const allUserIds = [...userIds, chatInitiator];
+      const allUserIds = [...userIds];
+      //const allUserIds = [...userIds, chatInitiator];
       const chatroom = await ChatroomService.initiateChat(
         allUserIds,
         type,
@@ -54,7 +55,10 @@ const ChatroomController = {
   getRecentConversation: async (req: Request, res: Response) => {
     // Your implementation here
   },
-  getConversationByRoomId: async (req: Request, res: Response): Promise<Response> => {
+  getConversationByRoomId: async (
+    req: Request,
+    res: Response,
+  ): Promise<Response> => {
     try {
       const { roomId } = req.params;
       const room = await ChatroomService.getChatroomByRoomId(roomId);

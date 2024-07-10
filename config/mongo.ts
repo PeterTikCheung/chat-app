@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import config from '@config/index'; // Assuming you have an index file with your configuration
-import Logging from '@src/utils/logging';
+import Logging from '@src/utils/Logging';
 
 const CONNECTION_URL = `mongodb://${config.db.url}/${config.db.name}`;
 

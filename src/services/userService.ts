@@ -1,5 +1,5 @@
 import User, { USER_TYPES } from '@src/models/User';
-import Logging from '@src/utils/logging';
+import Logging from '@src/utils/Logging';
 const UserService = {
   createUser: async (
     firstName: string,

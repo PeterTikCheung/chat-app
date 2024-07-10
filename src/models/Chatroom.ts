@@ -17,7 +17,7 @@ const chatroomSchema = new mongoose.Schema<IChatroom>(
   {
     _id: {
       type: String,
-      default: ():string => uuidv4().replace(/-/g, ''),
+      default: (): string => uuidv4().replace(/-/g, ''),
     },
     userIds: [String],
     type: String,

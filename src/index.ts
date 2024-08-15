@@ -13,7 +13,7 @@ import WebSockets from '@src/utils/WebSocket';
 import { setSharedContext } from '@src/utils/ContextManager';
 
 const app = express();
-const num = 0;
+
 const port = process.env.PORT || '3000';
 app.set('port', port);
 
